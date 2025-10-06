@@ -1,7 +1,7 @@
-# @oktils/array-to-tree
+# @okutils/array-to-tree
 
-[![npm version](https://img.shields.io/npm/v/@oktils/array-to-tree.svg)](https://www.npmjs.com/package/@oktils/array-to-tree)
-[![license](https://img.shields.io/npm/l/@oktils/array-to-tree.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/@okutils/array-to-tree.svg)](https://www.npmjs.com/package/@okutils/array-to-tree)
+[![license](https://img.shields.io/npm/l/@okutils/array-to-tree.svg)](LICENSE)
 
 一个 TypeScript 工具库，用于将扁平的数组结构通过父子关系转换为层级树结构。
 
@@ -9,7 +9,7 @@
 
 > [!IMPORTANT]
 >
-> 目前处于 Alpha 阶段，可能会存在 bug 或不兼容的变更。
+> 目前还没有发布 1.0 版，可能会存在 bug 或不兼容的变更。
 
 ## 特性
 
@@ -21,13 +21,16 @@
 
 ```bash
 # 使用 pnpm
-pnpm add @oktils/array-to-tree
+pnpm add @okutils/array-to-tree
 
 # 使用 yarn
-yarn add @oktils/array-to-tree
+yarn add @okutils/array-to-tree
 
 # 使用 npm
-npm install @oktils/array-to-tree
+npm install @okutils/array-to-tree
+
+# 使用 Bun
+bun add @okutils/array-to-tree
 ```
 
 ## 使用方法
@@ -35,7 +38,7 @@ npm install @oktils/array-to-tree
 ### 基本用法
 
 ```typescript
-import { arrayToTree } from "@oktils/array-to-tree";
+import { arrayToTree } from "@okutils/array-to-tree";
 
 const data = [
   { id: 1, name: "A", parentId: null },
@@ -119,7 +122,7 @@ export interface ArrayToTreeOptions {
 #### 示例：使用自定义字段
 
 ```typescript
-import { arrayToTree } from "@oktils/array-to-tree";
+import { arrayToTree } from "@okutils/array-to-tree";
 
 const data = [
   { key: "node-1", parent: null, title: "Node 1" },
@@ -152,6 +155,82 @@ const tree = arrayToTree(data, {
 ]
 ```
 
-## 📄 许可证
+### 错误类
+
+#### ArrayToTreeError
+
+用于表示在将数组转换为树结构时发生的错误。
+
+```typescript
+export class ArrayToTreeError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ArrayToTreeError";
+  }
+}
+```
+
+##### 使用场景
+
+`ArrayToTreeError` 会在以下情况下被抛出:
+
+1. **输入类型错误**: 当传入的 `data` 参数不是数组时
+
+```typescript
+arrayToTree("not array"); // 抛出 ArrayToTreeError: Expected an array but got an invalid argument.
+```
+
+2. **重复的节点 ID**: 当数组中存在相同 `id` 的节点时
+
+```typescript
+const data = [
+  { id: 1, name: "A", parentId: null },
+  { id: 1, name: "A-duplicate", parentId: null }, // 重复的 id
+];
+arrayToTree(data); // 抛出 ArrayToTreeError: Duplicate node id "1" detected.
+```
+
+3. **自引用错误**: 当节点的 `parentId` 等于自身 `id`,且 `allowSelfAsParent` 选项为 `false` 时
+
+```typescript
+const data = [
+  { id: 1, name: "A", parentId: 1 }, // 自引用
+];
+arrayToTree(data, { allowSelfAsParent: false });
+// 抛出 ArrayToTreeError: Node "1" cannot be its own parent (self reference found).
+```
+
+4. **循环引用检测**: 当节点之间形成循环依赖时
+
+```typescript
+const data = [
+  { id: 1, name: "A", parentId: 3 },
+  { id: 2, name: "B", parentId: 1 },
+  { id: 3, name: "C", parentId: 2 }, // 形成循环: 1 -> 3 -> 2 -> 1
+];
+arrayToTree(data); // 抛出 ArrayToTreeError: Cycle detected in parent chain: 1 -> 3 -> 2 -> 1
+```
+
+##### 错误处理
+
+建议使用 `try-catch` 捕获并处理这些错误:
+
+```typescript
+import { arrayToTree, ArrayToTreeError } from "@okutils/array-to-tree";
+
+try {
+  const tree = arrayToTree(data);
+  console.log(tree);
+} catch (error) {
+  if (error instanceof ArrayToTreeError) {
+    console.error("转换失败:", error.message);
+    // 处理特定的转换错误
+  } else {
+    console.error("未知错误:", error);
+  }
+}
+```
+
+## 许可证
 
 [MIT](LICENSE) © Luke Na

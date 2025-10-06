@@ -162,4 +162,15 @@ describe("arrayToTree", () => {
     ];
     expect(() => arrayToTree(data)).toThrow(ArrayToTreeError);
   });
+
+  it("should detect circular references (A -> B -> C -> A)", () => {
+    const data = [
+      { id: 1, name: "A", parentId: 3 },
+      { id: 2, name: "B", parentId: 1 },
+      { id: 3, name: "C", parentId: 2 },
+    ];
+
+    expect(() => arrayToTree(data)).toThrow(ArrayToTreeError);
+    expect(() => arrayToTree(data)).toThrow(/Cycle detected/);
+  });
 });

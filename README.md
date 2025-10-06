@@ -1,7 +1,7 @@
-# @oktils/array-to-tree
+# @okutils/array-to-tree
 
-[![npm version](https://img.shields.io/npm/v/@oktils/array-to-tree.svg)](https://www.npmjs.com/package/@oktils/array-to-tree)
-[![license](https://img.shields.io/npm/l/@oktils/array-to-tree.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/@okutils/array-to-tree.svg)](https://www.npmjs.com/package/@okutils/array-to-tree)
+[![license](https://img.shields.io/npm/l/@okutils/array-to-tree.svg)](LICENSE)
 
 A TypeScript utility library for converting a flat array structure into a hierarchical tree structure based on parent-child relationships.
 
@@ -9,7 +9,7 @@ This project is based on [alferov/array-to-tree](https://github.com/alferov/arra
 
 > [!IMPORTANT]
 >
-> Currently in Alpha stage. Bugs or breaking changes may occur.
+> This package has not yet reached version 1.0. Bugs or breaking changes may occur.
 
 ## Features
 
@@ -21,13 +21,16 @@ This project is based on [alferov/array-to-tree](https://github.com/alferov/arra
 
 ```bash
 # Using pnpm
-pnpm add @oktils/array-to-tree
+pnpm add @okutils/array-to-tree
 
 # Using yarn
-yarn add @oktils/array-to-tree
+yarn add @okutils/array-to-tree
 
 # Using npm
-npm install @oktils/array-to-tree
+npm install @okutils/array-to-tree
+
+# Using Bun
+bun add @okutils/array-to-tree
 ```
 
 ## Usage
@@ -35,7 +38,7 @@ npm install @oktils/array-to-tree
 ### Basic Usage
 
 ```typescript
-import { arrayToTree } from "@oktils/array-to-tree";
+import { arrayToTree } from "@okutils/array-to-tree";
 
 const data = [
   { id: 1, name: "A", parentId: null },
@@ -119,7 +122,7 @@ export interface ArrayToTreeOptions {
 #### Example: Using Custom Fields
 
 ```typescript
-import { arrayToTree } from "@oktils/array-to-tree";
+import { arrayToTree } from "@okutils/array-to-tree";
 
 const data = [
   { key: "node-1", parent: null, title: "Node 1" },
@@ -152,6 +155,82 @@ const tree = arrayToTree(data, {
 ]
 ```
 
-## 📄 License
+### Error Classes
+
+#### ArrayToTreeError
+
+Represents an error that occurs when converting an array to a tree structure.
+
+```typescript
+export class ArrayToTreeError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ArrayToTreeError";
+  }
+}
+```
+
+##### Use Cases
+
+`ArrayToTreeError` is thrown in the following situations:
+
+1.  **Invalid Input Type**: When the `data` argument passed is not an array.
+
+    ```typescript
+    arrayToTree("not array"); // Throws ArrayToTreeError: Expected an array but got an invalid argument.
+    ```
+
+2.  **Duplicate Node ID**: When there are nodes with the same `id` in the array.
+
+    ```typescript
+    const data = [
+      { id: 1, name: "A", parentId: null },
+      { id: 1, name: "A-duplicate", parentId: null }, // Duplicate id
+    ];
+    arrayToTree(data); // Throws ArrayToTreeError: Duplicate node id "1" detected.
+    ```
+
+3.  **Self-Reference Error**: When a node's `parentId` is equal to its own `id`, and the `allowSelfAsParent` option is `false`.
+
+    ```typescript
+    const data = [
+      { id: 1, name: "A", parentId: 1 }, // Self-reference
+    ];
+    arrayToTree(data, { allowSelfAsParent: false });
+    // Throws ArrayToTreeError: Node "1" cannot be its own parent (self reference found).
+    ```
+
+4.  **Circular Reference Detection**: When a circular dependency is formed between nodes.
+
+    ```typescript
+    const data = [
+      { id: 1, name: "A", parentId: 3 },
+      { id: 2, name: "B", parentId: 1 },
+      { id: 3, name: "C", parentId: 2 }, // Forms a cycle: 1 -> 3 -> 2 -> 1
+    ];
+    arrayToTree(data); // Throws ArrayToTreeError: Cycle detected in parent chain: 1 -> 3 -> 2 -> 1
+    ```
+
+##### Error Handling
+
+It is recommended to use `try-catch` to capture and handle these errors:
+
+```typescript
+import { arrayToTree, ArrayToTreeError } from "@okutils/array-to-tree";
+
+try {
+  const tree = arrayToTree(data);
+  console.log(tree);
+} catch (error) {
+  if (error instanceof ArrayToTreeError) {
+    console.error("Conversion failed:", error.message);
+    // Handle specific conversion errors
+  } else {
+    console.error("Unknown error:", error);
+  }
+}
+```
+
+## License
 
 [MIT](LICENSE) © Luke Na
