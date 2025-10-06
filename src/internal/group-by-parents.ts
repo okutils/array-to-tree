@@ -10,17 +10,15 @@ export const groupByParents = (
 
   // 第一次遍历：构建索引并检测重复 id
   for (const item of array) {
-    const key = item[options.customId];
+    const key = get(item, options.customId);
     if (key != null && Object.hasOwn(arrayById, key)) {
       throw new ArrayToTreeError(`Duplicate node id "${key}" detected.`);
     }
     arrayById[key] = item;
   }
 
-  // 用于缓存已确认“安全（无环）”的节点（其向上链路无环）
   const safe = new Set<any>();
 
-  // ...existing code...
   return array.reduce<Record<string, any[]>>((grouped, item) => {
     const id = get(item, options.customId);
     let parentId = get(item, options.parentId);
@@ -35,7 +33,6 @@ export const groupByParents = (
       parentId = options.rootId;
     }
 
-    // 2. 再进行环检测(仅在 id 存在时)
     if (id != null && !safe.has(id)) {
       const path = new Set<any>([id]);
       let cursor = parentId;
@@ -61,7 +58,6 @@ export const groupByParents = (
       for (const n of path) safe.add(n);
     }
 
-    // 3. 父不存在或为空,归为 root
     if (!parentId || !Object.hasOwn(arrayById, parentId)) {
       parentId = options.rootId;
     }

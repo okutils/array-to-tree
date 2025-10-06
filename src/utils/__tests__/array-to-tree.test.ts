@@ -173,4 +173,45 @@ describe("arrayToTree", () => {
     expect(() => arrayToTree(data)).toThrow(ArrayToTreeError);
     expect(() => arrayToTree(data)).toThrow(/Cycle detected/);
   });
+
+  it("should support nested path keys for id and parentId", () => {
+    const data = [
+      { meta: { id: 1 }, info: { parent: null }, name: "root" },
+      { meta: { id: 2 }, info: { parent: 1 }, name: "child-1" },
+      { meta: { id: 3 }, info: { parent: 1 }, name: "child-2" },
+      { meta: { id: 4 }, info: { parent: 2 }, name: "grandchild" },
+    ];
+
+    const tree = arrayToTree(data, {
+      customId: "meta.id",
+      parentId: "info.parent",
+    });
+
+    expect(tree).toEqual([
+      {
+        meta: { id: 1 },
+        info: { parent: null },
+        name: "root",
+        children: [
+          {
+            meta: { id: 2 },
+            info: { parent: 1 },
+            name: "child-1",
+            children: [
+              {
+                meta: { id: 4 },
+                info: { parent: 2 },
+                name: "grandchild",
+              },
+            ],
+          },
+          {
+            meta: { id: 3 },
+            info: { parent: 1 },
+            name: "child-2",
+          },
+        ],
+      },
+    ]);
+  });
 });

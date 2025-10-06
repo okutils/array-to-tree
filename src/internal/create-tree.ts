@@ -1,3 +1,5 @@
+import { get } from "./get";
+
 export const createTree = (
   grouped: Record<string, any[]>,
   rootNodes: any[],
@@ -10,7 +12,8 @@ export const createTree = (
 
   return rootNodes.map((node) => {
     const newNode = { ...node };
-    const children = grouped[node[customId]];
+    const nodeId = get(node, customId);
+    const children = nodeId != null ? grouped[nodeId] : undefined;
     if (children) {
       newNode[childrenProperty] = createTree(
         grouped,
