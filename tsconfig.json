@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "erasableSyntaxOnly": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "lib": ["es2022", "dom"],
+    "module": "preserve",
+    "moduleDetection": "auto",
+    "moduleResolution": "bundler",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "resolveJsonModule": true,
+    "rootDir": ".",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es2022",
+    "types": ["node", "jest"],
+    "verbatimModuleSyntax": true
+  },
+  "include": ["src"]
+}
