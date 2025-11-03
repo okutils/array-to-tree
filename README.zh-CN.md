@@ -111,13 +111,13 @@ export interface ArrayToTreeOptions {
 }
 ```
 
-| 选项                | 类型      | 默认值                                | 描述                                                                                  |
-| ------------------- | --------- | ------------------------------------- | ------------------------------------------------------------------------------------- |
-| `customId`          | `string`  | `'id'`                                | 指定节点唯一标识的字段名。                                                            |
-| `parentId`          | `string`  | `'parentId'`                          | 指定关联父节点的字段名。                                                              |
-| `childrenId`        | `string`  | `'children'`                          | 指定生成的树中用于存放子节点数组的字段名。                                            |
-| `allowSelfAsParent` | `boolean` | `false`                               | 是否允许一个节点的 `parentId` 等于它自身的 `id`。                                     |
-| `rootId`            | `string`  | `'__ARRAY_TO_TREE_VIRTUAL_ROOT_ID__'` | 内部使用的虚拟根 ID，通常不需要修改。根节点的 `parentId` 应为 `null` 或 `undefined`。 |
+| 选项                | 类型      | 默认值                                | 描述                                                                                                |
+| ------------------- | --------- | ------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `customId`          | `string`  | `'id'`                                | 指定节点唯一标识的字段名。                                                                          |
+| `parentId`          | `string`  | `'parentId'`                          | 指定关联父节点的字段名。                                                                            |
+| `childrenId`        | `string`  | `'children'`                          | 指定生成的树中用于存放子节点数组的字段名。                                                          |
+| `allowSelfAsParent` | `boolean` | `false`                               | 是否允许一个节点的 `parentId` 等于它自身的 `id`。                                                   |
+| `rootId`            | `string`  | `'__ARRAY_TO_TREE_VIRTUAL_ROOT_ID__'` | 内部使用的虚拟根 ID，通常不需要修改。根节点的 `parentId` 应为 `null`、`undefined` 或空字符串 `""`。 |
 
 #### 示例：使用自定义字段
 
