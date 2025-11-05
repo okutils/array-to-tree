@@ -21,7 +21,7 @@ const createJsConfig = (format) => ({
   input: ENTRY_FILE,
   output: {
     dir: OUTPUT_DIRS[format],
-    entryFileNames: "[name].js",
+    entryFileNames: format === "esm" ? "[name].mjs" : "[name].cjs",
     format,
     sourcemap: true,
   },
