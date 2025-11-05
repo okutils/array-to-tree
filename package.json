@@ -27,8 +27,8 @@
     "node": ">=20"
   },
   "exports": {
-    "import": "./dist/esm/index.js",
-    "require": "./dist/cjs/index.js",
+    "import": "./dist/esm/index.mjs",
+    "require": "./dist/cjs/index.cjs",
     "types": "./dist/types/index.d.ts"
   },
   "files": [
@@ -61,5 +61,5 @@
     "type-check": "tsc --noEmit"
   },
   "type": "module",
-  "version": "0.0.3a"
+  "version": "0.0.3b"
 }
