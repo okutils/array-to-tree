@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.4/schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -21,6 +21,7 @@
   },
   "javascript": {
     "formatter": {
+      "arrowParentheses": "always",
       "quoteStyle": "double",
       "semicolons": "always",
       "trailingCommas": "all"
@@ -29,24 +30,19 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "complexity": {
-        "useArrowFunction": "warn"
-      },
       "correctness": {
         "noUnusedVariables": "warn",
-        "useSingleJsDocAsterisk": "warn"
+        "useSingleJsDocAsterisk": "error"
       },
       "performance": {
         "noDelete": "error"
       },
       "recommended": true,
       "style": {
-        "noNonNullAssertion": "off",
         "useConst": "warn",
-        "useForOf": "warn"
+        "useForOf": "error"
       },
       "suspicious": {
-        "noConstEnum": "off",
         "noExplicitAny": "warn",
         "noVar": "warn",
         "useAwait": "warn"
@@ -56,6 +52,7 @@
   "vcs": {
     "clientKind": "git",
     "enabled": true,
+    // 使用 .gitignore 文件来忽略文件
     "useIgnoreFile": true
   }
 }
