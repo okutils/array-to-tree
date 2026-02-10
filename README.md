@@ -106,18 +106,16 @@ export interface ArrayToTreeOptions {
   childrenId?: string;
   customId?: string;
   parentId?: string;
-  rootId?: string;
   allowSelfAsParent?: boolean;
 }
 ```
 
-| Option              | Type      | Default                               | Description                                                                                                                                                  |
-| ------------------- | --------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `customId`          | `string`  | `'id'`                                | Specifies the field name for the unique identifier of a node.                                                                                                |
-| `parentId`          | `string`  | `'parentId'`                          | Specifies the field name for associating with the parent node.                                                                                               |
-| `childrenId`        | `string`  | `'children'`                          | Specifies the field name for the array of child nodes in the generated tree.                                                                                 |
-| `allowSelfAsParent` | `boolean` | `false`                               | Whether to allow a node's `parentId` to be equal to its own `id`.                                                                                            |
-| `rootId`            | `string`  | `'__ARRAY_TO_TREE_VIRTUAL_ROOT_ID__'` | An internal virtual root ID, which usually does not need to be changed. The `parentId` of root nodes should be `null`, `undefined`, or an empty string `""`. |
+| Option              | Type      | Default      | Description                                                                  |
+| ------------------- | --------- | ------------ | ---------------------------------------------------------------------------- |
+| `customId`          | `string`  | `'id'`       | Specifies the field name for the unique identifier of a node.                |
+| `parentId`          | `string`  | `'parentId'` | Specifies the field name for associating with the parent node.               |
+| `childrenId`        | `string`  | `'children'` | Specifies the field name for the array of child nodes in the generated tree. |
+| `allowSelfAsParent` | `boolean` | `false`      | Whether to allow a node's `parentId` to be equal to its own `id`.            |
 
 #### Example: Using Custom Fields
 
