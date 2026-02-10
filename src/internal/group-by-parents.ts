@@ -37,7 +37,7 @@ export const groupByParents = (
       const path = new Set<any>([id]);
       let cursor = parentId;
 
-      while (cursor && cursor !== options.rootId) {
+      while (cursor != null && cursor !== options.rootId) {
         if (safe.has(cursor)) {
           break;
         }
@@ -58,7 +58,7 @@ export const groupByParents = (
       for (const n of path) safe.add(n);
     }
 
-    if (!parentId || !Object.hasOwn(arrayById, parentId)) {
+    if (parentId == null || !Object.hasOwn(arrayById, parentId)) {
       parentId = options.rootId;
     }
 

@@ -214,4 +214,23 @@ describe("arrayToTree", () => {
       },
     ]);
   });
+
+  it("should handle numeric ID 0 correctly", () => {
+    const data = [
+      { id: 0, parentId: null, name: "Root Node (0)" },
+      { id: 1, parentId: 0, name: "Child of 0" },
+    ];
+
+    const tree = arrayToTree(data, {
+      customId: "id",
+      parentId: "parentId",
+    });
+
+    const rootNode = tree.find((n: any) => n.id === 0);
+    expect(rootNode).toBeDefined();
+    expect(rootNode.children).toBeDefined();
+    expect(rootNode.children).toHaveLength(1);
+    // @ts-expect-error children is optional
+    expect(rootNode.children[0].id).toBe(1);
+  });
 });
