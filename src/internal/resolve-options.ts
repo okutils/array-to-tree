@@ -1,14 +1,17 @@
-import type { ArrayToTreeOptions } from "../types";
+import type {
+  ArrayToTreeOptions,
+  NormalizedArrayToTreeOptions,
+} from "../types";
 
 export const resolveOptions = (
   options?: ArrayToTreeOptions,
-): Required<ArrayToTreeOptions> => {
-  options = options ?? {};
+): NormalizedArrayToTreeOptions => {
+  const resolved = options ?? {};
   return {
-    allowSelfAsParent: options.allowSelfAsParent ?? false,
-    childrenId: options.childrenId ?? "children",
-    customId: options.customId ?? "id",
-    parentId: options.parentId ?? "parentId",
-    rootId: options.rootId ?? "__ARRAY_TO_TREE_VIRTUAL_ROOT_ID__",
+    allowSelfAsParent: resolved.allowSelfAsParent ?? false,
+    childrenId: resolved.childrenId ?? "children",
+    customId: resolved.customId ?? "id",
+    parentId: resolved.parentId ?? "parentId",
+    rootId: Symbol("root"),
   };
 };
