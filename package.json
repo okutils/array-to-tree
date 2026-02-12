@@ -35,7 +35,6 @@
     "dist"
   ],
   "homepage": "https://github.com/okutils/array-to-tree",
-
   "keywords": [
     "array",
     "tree",
@@ -65,5 +64,5 @@
   },
   "type": "module",
   "types": "./dist/types/index.d.ts",
-  "version": "0.0.5"
+  "version": "0.0.6"
 }
